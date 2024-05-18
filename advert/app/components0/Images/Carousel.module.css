@@ -1,0 +1,25 @@
+.carouselContainer {
+    overflow: hidden;
+  }
+  
+  .marquee {
+    display: flex;
+    animation: marquee 15s linear infinite; 
+    white-space: nowrap;
+  }
+  
+  .imageContainer {
+    margin-right: 10px; 
+    flex-shrink: 0; 
+  }
+ 
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+  
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  

@@ -1,0 +1,30 @@
+.video-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .video {
+    max-width: 100%;
+  }
+  
+  .favorite {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  @media screen and (min-width: 600px) {
+    .small-screen .video {
+      width: 1000;
+      height: 600;
+    }
+  }
+ /* 
+  @media screen and (min-width: 601px) {
+    .large-screen .video {
+      width: 922px;
+      height: 522px;
+    }
+  }
+  */
