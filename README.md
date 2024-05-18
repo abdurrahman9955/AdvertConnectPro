@@ -20,5 +20,5 @@ License
 This project is licensed under the MIT License.
 
 Contact
-Have questions or need support? Reach out to us at support@advertconnectpro.com.
+Have questions or need support? Reach out to us at https://advertconnectpro.com/contact.
 
