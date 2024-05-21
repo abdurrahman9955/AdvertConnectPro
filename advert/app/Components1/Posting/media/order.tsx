@@ -6,6 +6,7 @@ import { FaRegWindowClose } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import Cookies from 'js-cookie';
 
 interface FormData {
   fullName: string;
@@ -62,7 +63,7 @@ const Order = () => {
     setError('');
     try {
 
-      const token = localStorage.getItem('accessToken');
+      const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In');
         return;
@@ -131,7 +132,9 @@ const Order = () => {
                  <PhoneInput
                  international
                  name='phoneNumber'
+                 //@ts-ignore
                  value={formData.phoneNumber}
+                 //@ts-ignore
                  onChange={(phone: string) => setFormData({ ...formData, phoneNumber: phone })}
                  defaultCountry="US"
                  inputProps={{

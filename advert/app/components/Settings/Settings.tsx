@@ -8,6 +8,9 @@ import 'react-phone-number-input/style.css';
 import { useRouter } from 'next/navigation';
 import { updateSettings, deleteSettings } from '@/app/utils/settings';
 import DeleteAccount from './userAccountDelete';
+import Cookies from 'js-cookie';
+
+
 
 const Settings = () => {
   
@@ -18,7 +21,7 @@ const Settings = () => {
    const [successMessage, setSuccessMessage] = useState<string | null>(null);
    const [settingsSaved, setSettingsSaved] = useState(false);
 
-   const initialFormData = localStorage.getItem('formData');
+   const initialFormData = Cookies.get('formData');
    const [formData, setFormData] = useState(initialFormData ? JSON.parse(initialFormData) : {
       country: '',
       currency: '',
@@ -34,14 +37,17 @@ const Settings = () => {
 
 
     useEffect(() => {
-      localStorage.setItem('formData', JSON.stringify(formData));
+      
+        Cookies.set('formData', JSON.stringify(formData), { path: '/', expires: 360 });
+        
     }, [formData]);
 
     useEffect(() => {
-      const savedSettings = localStorage.getItem('settingsSaved');
+      
+        const savedSettings = Cookies.get('settingsSaved');
       if (savedSettings === 'true') {
         setSettingsSaved(true);
-      }
+      } 
     }, []);
 
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -64,47 +70,47 @@ const Settings = () => {
       setLoading(true);
     
       try {
-        const token = localStorage.getItem('accessToken');
+
+      
+        const token = Cookies.get('accessToken');
         if (!token) {
           router.push('/Sign_In');
-          return;
+          return null; 
         }
-   
+      
         const response = await updateSettings(formData);
     
         if (response.success) {
           setSuccessMessage('Settings updated successfully!');
           setLoading(false);
           setSettingsSaved(true);
-          localStorage.setItem('settingsSaved', 'true');
+          Cookies.set('settingsSaved', 'true', { path: '/', expires: 360 });
         } else {
           setError('Settings updated successfully!');
           setLoading(false);
           setSettingsSaved(true);
-          localStorage.setItem('settingsSaved', 'true');
+          Cookies.set('settingsSaved', 'true', { path: '/', expires: 360 });
         }
       } catch (error:any) {
         console.error('Error updating settings:', error.message);
         setError('Settings updated successfully!');
         setLoading(false);
         setSettingsSaved(true);
-        localStorage.setItem('settingsSaved', 'true');
+        Cookies.set('settingsSaved', 'true', { path: '/', expires: 360 });
       }
     };
 
      const handleDelete = async () => {
     try {
-
-     const token = localStorage.getItem('accessToken');
-        if (!token) {
-          router.push('/Sign_In');
-          return;
-        }
-    
+          const token = Cookies.get('accessToken');
+          if (!token) {
+            router.push('/Sign_In');
+            return null; }
+        
       await deleteSettings();
       setSuccessMessage('Settings deleted successfully!');
-      localStorage.removeItem('formData')
-      localStorage.setItem('settingsSaved', 'false');
+      Cookies.remove('formData', { path: '/' }); 
+      Cookies.remove('settingsSaved', { path: '/' }); 
       setSettingsSaved(false);
     } catch (error) {
       setError('Failed to delete settings');
@@ -114,12 +120,11 @@ const Settings = () => {
 
  const handleClear = () => {
 
-   const token = localStorage.getItem('accessToken');
-   if (!token) {
-     router.push('/Sign_In');
-     return;
-   }
-
+    const token = Cookies.get('accessToken');
+    if (!token) {
+      router.push('/Sign_In');
+      return null;  }
+  
    setFormData({
      country: '',
      currency: '',
@@ -283,6 +288,7 @@ const Settings = () => {
           international
           name='phoneNumber'
           value={formData.phoneNumber}
+          //@ts-ignore
           onChange={(phone: string) => setFormData({ ...formData, phoneNumber: phone })}
           defaultCountry="US"
           inputProps={{

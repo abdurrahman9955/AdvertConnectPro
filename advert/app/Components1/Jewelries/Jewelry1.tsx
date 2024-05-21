@@ -6,8 +6,8 @@ import Jewelry5 from "./Jewelry5";
 
 
 const Jewelry1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Jewelry2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+ 
+  const [selectedRoute, setSelectedRoute] = useState<string>('Jewelry2');
 
 
   return (

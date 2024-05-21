@@ -9,8 +9,8 @@ import Send7 from "./Send7";
 
 
 const Send = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Send1'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+
+  const [selectedRoute, setSelectedRoute] = useState<string>('Send1');
 
 
   return (

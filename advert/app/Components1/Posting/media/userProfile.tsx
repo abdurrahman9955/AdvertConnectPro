@@ -13,6 +13,7 @@ import { getFollowingCount } from '@/app/utils/following';
 import { getVideoByProfileId } from '@/app/utils/videos';
 import { getImageByProfileId } from '@/app/utils/images';
 import { getBannerByProfileId } from '@/app/utils/banner';
+import Cookies from 'js-cookie';
 
 
 interface Profile {
@@ -79,16 +80,10 @@ interface Profile {
   
   }
 
-  interface UserProps {
-    userId: string; 
-  }
-
-const UserProfile : React.FC<UserProps> = ({ userId }) => {
+const UserProfile = () => {
 
   const router = useRouter();
-
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Images'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  const [selectedRoute, setSelectedRoute] = useState<string>('Images');
   const [productImages, setProductImages] = useState<ProductImage[]>([]); 
   const [isLoading, setIsLoading] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -144,7 +139,7 @@ useEffect(() => {
           console.log('followers', response);
           
           if (response.success && response.followers) {
-              const authenticatedUserId = localStorage.getItem('userId');
+              const authenticatedUserId = Cookies.get('userId');
               const isFollowingUser = response.followers.some(follower => follower.followerId.toString() === authenticatedUserId);
               setIsFollowing(isFollowingUser);
               setFollowersCount(response.followers.length);
@@ -160,7 +155,7 @@ useEffect(() => {
   const handleFollow = async () => {
       try {
 
-        const token = localStorage.getItem('accessToken');
+        const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In');
         return;
@@ -177,7 +172,7 @@ useEffect(() => {
   const handleUnfollow = async () => {
       try {
 
-        const token = localStorage.getItem('accessToken');
+        const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In');
         return;

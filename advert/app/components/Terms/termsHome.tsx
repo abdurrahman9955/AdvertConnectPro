@@ -13,9 +13,7 @@ import TermsContact from "./termsContact";
 const TermsHome = () => {
 
   const router = useRouter();
-
-  const initialRoute = localStorage.getItem('selectedRoute') || 'TermsAbout'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  const [selectedRoute, setSelectedRoute] = useState<string>('TermsAbout');
 
   return (
     <div className="w-full ">

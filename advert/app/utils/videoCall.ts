@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface ApiResponse {
@@ -21,7 +21,7 @@ interface AuthApiResponse extends ApiResponse {
 
 class VideoCallUtils {
   private static getHeaders(): AxiosRequestConfig {
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
 
     return {
       headers: {

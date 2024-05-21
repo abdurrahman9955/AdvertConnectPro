@@ -123,6 +123,11 @@ loginRoutes.post('/login', async (req, res) => {
 
     req.session.isAuthenticated = true;
 
+    res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('userId', user.id, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('isAuthenticated', 'true', { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite:'none', secure: true });
+
     return res.status(200).json({
       message: 'OTP sent successfully',
       token,

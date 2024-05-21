@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { FaStar, FaStarHalf } from 'react-icons/fa'; 
 import { giveBannerRating } from '@/app/utils/rateBanner';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 const Rating1 = ({ productId }: { productId: string }) => {
 
@@ -16,7 +17,7 @@ const Rating1 = ({ productId }: { productId: string }) => {
   const handleSubmitRating = async () => {
     try {
 
-      const token = localStorage.getItem('accessToken');
+      const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In');
         return;

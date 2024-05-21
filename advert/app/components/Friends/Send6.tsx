@@ -3,8 +3,8 @@ import { useState } from "react";
 import Search from "./Search";
 
 const Send6 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Send1'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  
+  const [selectedRoute, setSelectedRoute] = useState<string>('Send1');
 
 
   return (

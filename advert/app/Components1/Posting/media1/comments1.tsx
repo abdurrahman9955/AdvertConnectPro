@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaRegWindowClose } from "react-icons/fa";
 import { postCommentBanner } from '@/app/utils/commentBanner';
+import Cookies from 'js-cookie';
 
 const Comment1 = ({ productId }: { productId: string }) => {
   const [commentContent, setCommentContent] = useState('');

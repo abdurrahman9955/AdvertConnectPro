@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaStar, FaStarHalf } from 'react-icons/fa';
 import { giveImagesRating, } from '@/app/utils/rateImages';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 
 const Rating = ({ productId }: { productId: string }) => {
@@ -15,7 +16,7 @@ const Rating = ({ productId }: { productId: string }) => {
   const handleSubmitRating = async () => {
     try {
 
-      const token = localStorage.getItem('accessToken');
+      const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In');
         return;

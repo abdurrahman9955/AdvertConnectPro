@@ -5,8 +5,8 @@ import Music4 from "./Music4";
 import Music5 from "./Music5";
 
 const Music1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Music2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  
+  const [selectedRoute, setSelectedRoute] = useState<string>('Music2');
 
 
   return (

@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import { useState } from "react";
 import Coffee2 from "./Coffee2";
@@ -6,8 +7,8 @@ import Coffee5 from "./Coffee5";
 
 
 const Coffee1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Coffee2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+ 
+  const [selectedRoute, setSelectedRoute] = useState<string>('Coffee2');
 
 
   return (

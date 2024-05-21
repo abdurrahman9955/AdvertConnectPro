@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface ApiResponse<T = any> {
@@ -47,12 +47,17 @@ export const getCommentsVideo = async (productId: string): Promise<CommentVideos
 export const postCommentVideo = async (content: string,): Promise<CommentVideos> => {
   try {
 
-    const userId = localStorage.getItem('userId');
-    const productId = localStorage.getItem('productId');
+    const productId = Cookies.get('productId');
 
-    const token = localStorage.getItem('accessToken');
+    const userId = Cookies.get('userId');
+
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse<CommentVideos>> = await axios.post(

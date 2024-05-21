@@ -6,8 +6,8 @@ import Cosmetics5 from "./Cosmetics5";
 
 
 const Cosmetics1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Cosmetics2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  
+  const [selectedRoute, setSelectedRoute] = useState<string>('Cosmetics2');
 
 
   return (

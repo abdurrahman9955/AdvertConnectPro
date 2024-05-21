@@ -38,3 +38,24 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+mycode.md
+
+/mycode.md
+
+/readme2.md
+
+readme2.md
+
+/.dockerignore
+
+.dockerignore
+
+/docker-compose*
+
+docker-compose*
+
+/Dockerfile*
+
+Dockerfile*
+

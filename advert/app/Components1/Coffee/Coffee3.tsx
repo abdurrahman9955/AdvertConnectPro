@@ -1,7 +1,9 @@
+'use client'
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';;
 import { updateFilter8, resetFilter8  } from '@/app/app/filters/filter8'; 
 import { RootState } from '@/app/app/store';
+import Cookies from 'js-cookie';
 
 
 const Books3 = () => {
@@ -17,7 +19,7 @@ const Books3 = () => {
   }, [filterState]);
 
   useEffect(() => {
-    const storedFilter = localStorage.getItem('filter8');
+    const storedFilter = Cookies.get('filter8');
     if (storedFilter) {
       const parsedFilter = JSON.parse(storedFilter);
       setFilter(parsedFilter);
@@ -42,14 +44,14 @@ const Books3 = () => {
       ...filter,
     };
     dispatch(updateFilter8(parsedFilter));
-    localStorage.setItem('filter8', JSON.stringify(parsedFilter));
+    Cookies.set('filter8', JSON.stringify(parsedFilter), { expires: 1, path: '/' });
     setShowResetButton(true); 
   };
 
 
   const handleReset = () => {
     dispatch(resetFilter8()); 
-    localStorage.removeItem('filter8'); 
+    Cookies.remove('filter8', { path: '/' });
     setFilter({
       city: '',
       country: '',

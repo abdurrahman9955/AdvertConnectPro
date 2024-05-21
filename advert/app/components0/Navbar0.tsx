@@ -12,6 +12,7 @@ import store from '@/app/app/store';
 import { useRouter } from "next/navigation";
 import { RootState } from "@/app/app/store";
 import {  signOut, useSession } from 'next-auth/react';
+import Cookies from 'js-cookie';
 
 
 interface UserInfo {
@@ -50,8 +51,8 @@ const Navbar0 = () => {
        const handleLogout = async () => {
         try {
           await signOut();
-          localStorage.removeItem('userId');
-          localStorage.removeItem('accessToken');
+          Cookies.remove('userId', { path: '/' }); 
+          Cookies.remove('accessToken', { path: '/' }); 
           dispatch(setAuthenticated(false)); 
           await logout();
           dispatch(setAuthenticated(false)); 
@@ -63,8 +64,8 @@ const Navbar0 = () => {
         const handleSignOut = async () => {
           try {
             await signOut();
-            localStorage.removeItem('userId');
-            localStorage.removeItem('accessToken');
+            Cookies.remove('userId', { path: '/' }); 
+            Cookies.remove('accessToken', { path: '/' }); 
             dispatch(setAuthenticated(false));
             router.push('/Sign_In'); 
           } catch (error:any) {
@@ -74,8 +75,8 @@ const Navbar0 = () => {
 
       useEffect(() => {
         if (session && session.user && (session.user as User).id) {
-          localStorage.setItem('userId', (session.user as User).id);
-          localStorage.setItem('accessToken',"fbeae2838c3783ad69b03b656af22fbeae2838c3783ad69b03b656af2");
+          Cookies.set('accessToken', "fbeae2838c3783ad69b03b656af22fbeae2838c3783ad69b03b656af2",{ path: '/', expires: 7 });
+          Cookies.set('userId', (session.user as User).id, { path: '/', expires: 7 });
           dispatch(setAuthenticated(true));
         }
       }, [session]);

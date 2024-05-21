@@ -5,8 +5,8 @@ import Properties4 from "./Properties4";
 import Properties5 from "./Properties5";
 
 const Properties1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Properties2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+ 
+  const [selectedRoute, setSelectedRoute] = useState<string>('Properties2');
 
 
   return (

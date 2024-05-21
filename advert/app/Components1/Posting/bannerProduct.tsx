@@ -16,6 +16,7 @@ import ProfileBanner1 from './media1/profileBanner1';
 import { getSettings } from '@/app/utils/settings'; 
 import SharingImages from './media/share';
 
+
 interface Profile {
   photoUrl?: string;
 }

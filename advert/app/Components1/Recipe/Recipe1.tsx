@@ -6,8 +6,8 @@ import Recipe5 from "./Recipe5";
 
 
 const Recipe1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Recipe2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+ 
+  const [selectedRoute, setSelectedRoute] = useState<string>('Recipe2');
 
 
   return (

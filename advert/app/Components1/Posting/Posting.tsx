@@ -7,8 +7,8 @@ import ProductVideos from "./Posting3";
 
 
 const Posting = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'ProductImages'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  
+  const [selectedRoute, setSelectedRoute] = useState<string>('ProductImages');
 
   return (
     <div className='flex flex-col  pt-3 w-full 

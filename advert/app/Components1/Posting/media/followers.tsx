@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { followUser, unfollowUser, getFollowersCount } from '@/app/utils/followers'; 
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface UserProps {
   userId: string; 
@@ -37,7 +38,7 @@ useEffect(() => {
   const handleFollow = async () => {
       try {
 
-        const token = localStorage.getItem('accessToken');
+        const token = Cookies.get('accessToken');
         if (!token) {
           router.push('/Sign_In');
           return;
@@ -54,7 +55,7 @@ useEffect(() => {
   const handleUnfollow = async () => {
       try {
 
-        const token = localStorage.getItem('accessToken');
+        const token = Cookies.get('accessToken');
         if (!token) {
           router.push('/Sign_In');
           return;

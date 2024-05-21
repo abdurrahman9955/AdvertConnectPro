@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface ApiResponse {
@@ -34,11 +34,15 @@ interface User {
 export const getFollowers = async (): Promise<ApiResponse> => {
   try {
 
-   const userId = localStorage.getItem('userId');
-    
-    const token = localStorage.getItem('accessToken');
+    const userId = Cookies.get('userId');
+
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
     
     const response: AxiosResponse<ApiResponse> = await 
@@ -77,11 +81,15 @@ export const getFollowers = async (): Promise<ApiResponse> => {
 export const getFollowing = async (): Promise<ApiResponse> => {
   try {
 
-    const userId = localStorage.getItem('userId');
-    
-    const token = localStorage.getItem('accessToken');
+    const userId = Cookies.get('userId');
+
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
     
     const response: AxiosResponse<ApiResponse> = await 
@@ -128,11 +136,15 @@ export const getFollowingCount = async (userId:string): Promise<ApiResponse> => 
 export const followUser = async (userId: string): Promise<ApiResponse> => {
   try {
 
-    const id = localStorage.getItem('userId');
-    
-    const token = localStorage.getItem('accessToken');
+    const id = Cookies.get('userId');
+
+    if (!id) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse> = await axios.post(
@@ -147,7 +159,7 @@ export const followUser = async (userId: string): Promise<ApiResponse> => {
       }
     );
 
-    localStorage.setItem(`followStatus_${userId}`, 'following');
+    Cookies.set(`followStatus_${userId}`, 'following');
 
     return response.data;
   } catch (error:any) {
@@ -159,11 +171,15 @@ export const followUser = async (userId: string): Promise<ApiResponse> => {
 export const unfollowUser = async (userId: string): Promise<ApiResponse> => {
   try {
 
-    const id = localStorage.getItem('userId');
+    const id = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!id) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse> = await axios.delete(
@@ -177,7 +193,7 @@ export const unfollowUser = async (userId: string): Promise<ApiResponse> => {
       }
     );
 
-    localStorage.removeItem(`followStatus_${userId}`);
+    Cookies.remove(`followStatus_${userId}`);
 
     return response.data;
   } catch (error:any) {
@@ -188,8 +204,8 @@ export const unfollowUser = async (userId: string): Promise<ApiResponse> => {
 
 export const checkFollowingStatus = async (userId: string): Promise<ApiResponse> => {
   try {
-    const authenticatedUserId = localStorage.getItem('userId');
-    const token = localStorage.getItem('accessToken');
+    const authenticatedUserId = Cookies.get('userId');
+    const token = Cookies.get('accessToken');
 
     if (!authenticatedUserId || !token) {
       throw new Error('User ID or access token not found');

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface Image {
@@ -60,11 +60,15 @@ export const uploadImage = async (formData: FormData): Promise<ApiResponse> => {
  
   try {
    
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response = await axios.post(`${API_BASE_URL}/images/upload`, formData, {
@@ -77,7 +81,7 @@ export const uploadImage = async (formData: FormData): Promise<ApiResponse> => {
 
     const { images } = response.data; 
     const imageId = images[0].id; 
-    localStorage.setItem('imageId', imageId.toString());
+    Cookies.set('imageId', imageId.toString());
 
     return response.data;
   } catch (error:any) {
@@ -89,11 +93,15 @@ export const uploadImage = async (formData: FormData): Promise<ApiResponse> => {
 export const deleteImage = async (productId:number): Promise<ApiResponse> => {
   try {
 
-    const userId = localStorage.getItem('userId');
-    
-    const token = localStorage.getItem('accessToken');
+    const userId = Cookies.get('userId');
+
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse> = await axios.delete(
@@ -115,11 +123,15 @@ export const deleteImage = async (productId:number): Promise<ApiResponse> => {
 export const editImage = async (imageId: number): Promise<ApiResponse> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
    
     const response: AxiosResponse<ApiResponse> = await axios.put(
@@ -142,11 +154,15 @@ export const editImage = async (imageId: number): Promise<ApiResponse> => {
 export const getImage = async (filter: FilterState, searchQuery?:string): Promise<Image[]> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     let apiUrl = `${API_BASE_URL}/images/getImage?city=${filter.city}&country=${filter.country}&state=${filter.state}&fullAddress=${filter.fullAddress}&minPrice=${filter.minPrice}&maxPrice=${filter.maxPrice}&company=${filter.company}&name=${filter.name}&types=${filter.types}&categories=${filter.categories}`;
@@ -173,7 +189,7 @@ export const getImage = async (filter: FilterState, searchQuery?:string): Promis
 export const getImageByProfileId = async (): Promise<Image[]> => {
   try {
 
-    const userId = localStorage.getItem('profileId');
+    const userId = Cookies.get('profileId');
 
     const response: AxiosResponse<Image[]> = await axios.get(`${API_BASE_URL}/images/getImagesByProfileId`,
 
@@ -210,7 +226,8 @@ export const getImages = async (filter: FilterState, searchQuery?: string): Prom
 
 export const getProductById = async (): Promise<Image> => {
   try {
-    const productId = localStorage.getItem('productId'); 
+    
+    const productId = Cookies.get('productId'); 
      
     if (!productId) {
       throw new Error('Product Id not found in local storage');

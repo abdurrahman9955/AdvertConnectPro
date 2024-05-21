@@ -10,9 +10,7 @@ import { useRouter } from "next/navigation";
 const Header = () => {
 
   const router = useRouter();
-
-  const initialRoute = localStorage.getItem('selectedRoute') || 'All'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  const [selectedRoute, setSelectedRoute] = useState<string>('All');
 
   return (
     <div className="w-full ">

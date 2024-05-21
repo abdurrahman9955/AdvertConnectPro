@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface Product {
@@ -39,9 +39,9 @@ interface AuthApiResponse extends ApiResponse {
 export const createProduct = async (productData: Product): Promise<ApiResponse> => {
   try {
 
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse> = await axios.post(
@@ -86,10 +86,11 @@ export const getProductById = async (productId: number): Promise<Product | null>
 export const updateProduct = async (productId: number, updatedData: Partial<Product>): Promise<ApiResponse> => {
   try {
 
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
+
     const response: AxiosResponse<ApiResponse> = await axios.put(
       `${API_BASE_URL}/product/${productId}`,
       updatedData,
@@ -110,9 +111,9 @@ export const updateProduct = async (productId: number, updatedData: Partial<Prod
 export const deleteProduct = async (productId: number): Promise<ApiResponse> => {
   try {
 
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
    
     const response: AxiosResponse<ApiResponse> = await axios.delete(

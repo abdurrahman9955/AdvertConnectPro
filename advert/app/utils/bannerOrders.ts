@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 
@@ -48,13 +48,17 @@ interface ApiResponse {
 export const bannerOrder = async (order: Order,): Promise<ApiResponse> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const productId = Cookies.get('productId');
 
-    const productId = localStorage.getItem('productId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse> = await axios.post(
@@ -79,11 +83,15 @@ export const bannerOrder = async (order: Order,): Promise<ApiResponse> => {
 export const getBannerOrders = async (): Promise<ApiResponse> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse> = await 

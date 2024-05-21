@@ -3,7 +3,7 @@ import { deleteImage } from '@/app/utils/images';
 
 interface DeleteProductButtonProps {
   productId: string; 
-};
+}
 
 const DeleteProductButton: React.FC<DeleteProductButtonProps> = ({ productId }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -14,6 +14,7 @@ const DeleteProductButton: React.FC<DeleteProductButtonProps> = ({ productId }) 
     try {
       setLoading(true);
       setError(null);
+      //@ts-ignore
       await deleteImage(productId); 
       setSuccess(true);
     } catch (err:any) {

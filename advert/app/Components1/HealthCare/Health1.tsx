@@ -6,8 +6,8 @@ import Health5 from "./Health5";
 
 
 const Health1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Health2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  
+  const [selectedRoute, setSelectedRoute] = useState<string>('Health2');
 
 
   return (

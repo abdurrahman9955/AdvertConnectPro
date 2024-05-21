@@ -10,6 +10,8 @@ import { setEmail } from "../app/registerOtp";
 import Verify from "./verify";
 import {  useSession } from 'next-auth/react';
 import { setAuthenticated } from '../app/authenticateSlice';
+import Cookies from 'js-cookie';
+
 
 interface User {
   id: string;
@@ -38,14 +40,22 @@ const Sign_up =  ()  => {
   const { data: session } = useSession();
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
-    const token = localStorage.getItem('accessToken');
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-
-    if (isAuthenticated === 'true' && userId && token) {
+    if (session && session.user && (session.user as User).id) {
       router.push('/');
     }
-  }, []); 
+  }, [session, router]);
+
+  useEffect(() => {
+    
+      const userId =  Cookies.get('userId');
+      const token = Cookies.get('accessToken');
+      const isAuthenticated = Cookies.get('isAuthenticated');
+
+      if (isAuthenticated === 'true' && userId && token) {
+        router.push('/');
+      } 
+    
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

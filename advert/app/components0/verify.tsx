@@ -5,6 +5,7 @@ import { FaFacebook } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { FaGoogle } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
 
 interface User {
   id: string;
@@ -26,10 +27,11 @@ const Verify: React.FC = () => {
 
   useEffect(() => {
     if (session && session.user && (session.user as User).id) {
-      localStorage.setItem('userId', (session.user as User).id);
-      localStorage.setItem('accessToken', "fbeae2838c3783ad69b03b656af22fbeae2838c3783ad69b03b656af2");
+      Cookies.set('accessToken', "fbeae2838c3783ad69b03b656af22fbeae2838c3783ad69b03b656af2",{ path: '/', expires: 7 });
+      Cookies.set('userId', (session.user as User).id, { path: '/', expires: 7 });
+
       dispatch(setAuthenticated(true));
-      router.push('/');
+      
     }
   }, [session]);
 

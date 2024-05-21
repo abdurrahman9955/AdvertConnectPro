@@ -6,8 +6,8 @@ import Kitchen5 from "./Kitchen5";
 
 
 const Kitchen1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Kitchen2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  
+  const [selectedRoute, setSelectedRoute] = useState<string>('Kitchen2');
 
 
   return (

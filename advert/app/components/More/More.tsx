@@ -5,6 +5,7 @@ import OrderBanner from './OrderBanner';
 import OrderImages from './OrderImages';
 import OrderVideos from './OrderVideos';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 const More = () => {
 
@@ -14,18 +15,20 @@ const More = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      router.push('/Sign_In');
-    } 
+   
+      const token = Cookies.get('accessToken');
+      if (!token) {
+        router.push('/Sign_In');
+      }
+    
   }, [router]);
 
   useEffect(() => {
 
     const fetchTotalOrders = async () => {
       try {
-        const userId = localStorage.getItem('userId');
-        const token = localStorage.getItem('accessToken');
+        const userId = Cookies.get('userId');
+        const token = Cookies.get('accessToken');
         if (!token || !userId) {
           throw new Error('Access token or user ID not found');
         }

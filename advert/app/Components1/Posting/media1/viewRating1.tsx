@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaStar, FaStarHalf, FaRegStar } from 'react-icons/fa';
 import { getBannerRatings } from '@/app/utils/rateBanner';
+import Cookies from 'js-cookie';
 
 
 const ViewRating1 = ({ productId }: { productId: string }) => {

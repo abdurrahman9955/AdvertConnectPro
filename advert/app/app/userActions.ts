@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { getUserByToken } from '../utils/userToken';
+import { getCurrentUser } from '../utils/userToken';
 import { getUserById } from '../utils/userId';
 import { SetUserNameAction, SET_USER_NAME } from './userActionsType';
 import { RootState } from './store';
@@ -27,7 +27,7 @@ export const setUserData = (userData: any): SetUserDataAction => ({
 
 export const getUserData = (authToken: string) => async (dispatch: Dispatch) => {
   try {
-    const userDataResponse = await getUserByToken(authToken);
+    const userDataResponse = await getCurrentUser();
 
     if (userDataResponse.success) {
       const userData = userDataResponse.data;

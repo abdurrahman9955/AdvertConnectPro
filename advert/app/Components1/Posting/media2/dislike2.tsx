@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { dislikeVideo, getDislikeVideo } from '@/app/utils/dislikeVideo';
 import { BiDislike, BiSolidDislike} from "react-icons/bi";
+import Cookies from 'js-cookie';
 
 interface DislikeButtonProps {
   productId: string;

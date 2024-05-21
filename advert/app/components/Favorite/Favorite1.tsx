@@ -8,6 +8,7 @@ import { getSettings } from '@/app/utils/settings';
 import SharingImages from '@/app/Components1/Posting/media/share';
 import { getFavoriteImages } from '@/app/utils/favoriteImages';
 import DeleteImages from './deleteImages';
+import Cookies from 'js-cookie';
 
 interface Product {
   id: number;
@@ -117,7 +118,7 @@ const Favorite1: React.FC = () => {
 
 
   const handleProductClick = (productId: number) => {
-    localStorage.setItem('productId', productId.toString()); 
+    Cookies.set('productId', productId.toString(), { expires: 1 / 24, path: '/' });
   };
 
   const productsWithImages = products.filter((product) => product.mediaUrl && product.mediaUrl.length > 0);

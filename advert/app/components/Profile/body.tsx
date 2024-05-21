@@ -3,7 +3,7 @@ import React, { useState, useEffect,ChangeEvent } from 'react';
 import Image from 'next/image';
 import { FaUser, FaEdit, FaTrash } from 'react-icons/fa';
 import { uploadProfileImage, updateProfileImage, getProfileImage, deleteProfileImage } from '@/app/utils/profile';
-
+import Cookies from 'js-cookie';
 
 const Profile = () => {
   const [profileImage, setProfileImage] = useState(null);
@@ -13,7 +13,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfileImage = async () => {
       try {
-        const userId = localStorage.getItem('userId');
+        const userId = Cookies.get('userId');
         if (!userId) {
           throw new Error('User ID not found');
         }
@@ -36,7 +36,7 @@ const Profile = () => {
   
   const handleUpload = async () => {
     try {
-      const userId = localStorage.getItem('userId');
+      const userId = Cookies.get('userId');
       if (!userId) {
         throw new Error('User ID not found');
       }
@@ -54,7 +54,7 @@ const Profile = () => {
 
   const handleUpdate = async () => {
     try {
-      const userId = localStorage.getItem('userId');
+      const userId = Cookies.get('userId');
       if (!userId) {
         throw new Error('User ID not found');
       }
@@ -73,7 +73,7 @@ const Profile = () => {
   
   const handleDelete = async () => {
     try {
-      const userId = localStorage.getItem('userId'); 
+      const userId = Cookies.get('userId'); 
       if (!userId) {
         throw new Error('User ID not found');
       }

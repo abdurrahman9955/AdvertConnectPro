@@ -117,6 +117,12 @@ registerRoutes.post('/register', async (req, res) => {
 
     req.session.isAuthenticated = true;
 
+    res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('userId', newUser.id, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('isAuthenticated', 'true', { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite:'none', secure: true });
+
+
     return res.status(201).json({ token, accessToken, refreshToken, userId: newUser.id });
   } catch (error) {
     console.error(error);

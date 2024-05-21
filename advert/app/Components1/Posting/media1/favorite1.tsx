@@ -3,6 +3,7 @@ import { FaHeart} from 'react-icons/fa';
 import { IoHeartOutline } from 'react-icons/io5';
 import { addToFavoriteBanner, removeFavoriteBanner } from '@/app/utils/favoriteBanner';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 const AddToFavorites1 = ({ productId }: { productId: string }) => {
 
@@ -14,7 +15,7 @@ const AddToFavorites1 = ({ productId }: { productId: string }) => {
 
   useEffect(() => {
 
-    const localStorageLiked = localStorage.getItem(`favorite_${productId}`);
+    const localStorageLiked = Cookies.get(`favorite_${productId}`);
      if (localStorageLiked === 'true') { 
      setIsFavorite(true);
  }
@@ -22,7 +23,7 @@ const AddToFavorites1 = ({ productId }: { productId: string }) => {
 
 useEffect(() => {
 
- const localStorageLiked = localStorage.getItem(`favorite_${productId}`);
+ const localStorageLiked = Cookies.get(`favorite_${productId}`);
   if (localStorageLiked === 'false') { 
   setIsFavorite(false);
 }
@@ -34,14 +35,14 @@ useEffect(() => {
 
     try {
 
-      const token = localStorage.getItem('accessToken');
+      const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In');
         return;
       }
 
       await addToFavoriteBanner(productId);
-      localStorage.setItem(`favorite_${productId}`, 'true');
+      Cookies.set(`favorite_${productId}`, 'true', { expires: 360, path: '/' });
       setIsFavorite(true);
       alert('Product added to favorites successfully!');
     } catch (error) {
@@ -58,14 +59,15 @@ useEffect(() => {
 
     try {
 
-      const token = localStorage.getItem('accessToken');
+      const token = Cookies.get('accessToken');
+
       if (!token) {
         router.push('/Sign_In');
         return;
       }
 
       await addToFavoriteBanner(productId);
-      localStorage.setItem(`favorite_${productId}`, 'false');
+      Cookies.set(`favorite_${productId}`, 'false', { expires: 360, path: '/' });
       setIsFavorite(false);
       alert('Product removed from favorites successfully!');
     } catch (error) {

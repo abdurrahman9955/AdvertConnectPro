@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface Settings {
@@ -20,12 +20,16 @@ interface ApiResponse {
 }
 
 export const getSettings = async (): Promise<Settings> => {
-  try {
-    const userId = localStorage.getItem('userId');
+  try { 
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<Settings & ApiResponse> = await 
@@ -50,15 +54,15 @@ export const getSettings = async (): Promise<Settings> => {
 export const updateSettings = async (formData: Settings): Promise<ApiResponse> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
     if (!userId) {
-      throw new Error('User ID not found');
+      throw new Error('User ID not found in cookies');
     }
 
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse> = await axios.post(
@@ -84,11 +88,15 @@ export const updateSettings = async (formData: Settings): Promise<ApiResponse> =
 export const deleteSettings = async (): Promise<ApiResponse> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse> = await axios.delete(

@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { Dispatch } from 'redux';
+import Cookies from 'js-cookie';
 import { submitContactSuccess, submitContactFailure } from '../app/contactActions';
 
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
@@ -55,9 +56,9 @@ export const submitContact = async (dispatch: Dispatch, contactData: Contact) =>
 export const getContacts = async () => {
   try {
 
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<Contact[]> = await axios.get(`${API_BASE_URL}/contacts/contacts`,
@@ -88,11 +89,11 @@ export const getContacts = async () => {
 export const deleteContact = async (contactId: string) => {
   try {
 
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
-    
+   
     const response: AxiosResponse<responseData> = await 
     axios.delete(`${API_BASE_URL}/contacts/${contactId}`,
     {

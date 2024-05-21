@@ -5,8 +5,8 @@ import Grocery4 from "./Grocery4";
 import Grocery5 from "./Grocery5";
 
 const Grocery1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Grocery2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+ 
+  const [selectedRoute, setSelectedRoute] = useState<string>('Grocery2');
 
 
   return (

@@ -4,6 +4,7 @@ import { FaMessage } from "react-icons/fa6";
 import { postCommentBanner } from '@/app/utils/commentBanner';
 import { FaRegWindowClose } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 const Comments2 = () => {
 
@@ -25,7 +26,7 @@ const Comments2 = () => {
   const handleCommentSubmit = async () => {
     try {
 
-      const token = localStorage.getItem('accessToken');
+      const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In');
         return;

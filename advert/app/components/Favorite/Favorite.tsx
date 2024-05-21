@@ -4,6 +4,7 @@ import Favorite2 from "./Favorite2"
 import Favorite3 from "./Favorite3"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import Cookies from 'js-cookie';
 
 
 const Favorite = () => {
@@ -11,10 +12,12 @@ const Favorite = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      router.push('/Sign_In');
-    } 
+    
+      const token = Cookies.get('accessToken');
+      if (!token) {
+        router.push('/Sign_In');
+      }
+   
   }, [router]);
 
     return (

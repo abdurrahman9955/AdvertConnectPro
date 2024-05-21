@@ -3,6 +3,7 @@ import { getCommentsImages } from '@/app/utils/commentImages';
 import { FaUser } from 'react-icons/fa';
 import { FaRegUserCircle } from "react-icons/fa";
 import { formatDistanceToNow } from 'date-fns';
+import Cookies from 'js-cookie';
 
 interface Comment {
   id: number;

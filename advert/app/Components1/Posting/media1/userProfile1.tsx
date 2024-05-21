@@ -10,6 +10,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { getBannerById } from "@/app/utils/banner"
 import { followUser, unfollowUser, getFollowersCount } from '@/app/utils/following';
 import { getFollowingCount } from '@/app/utils/following'; 
+import Cookies from 'js-cookie';
 
 interface Profile {
     photoUrl?: string;
@@ -53,16 +54,11 @@ interface Profile {
     productImages: ProductImage[]; 
   }
 
-  interface UserProps {
-    userId: string; 
-  }
-
-const UserProfile1: React.FC<UserProps> = ({ userId }) => {
+const UserProfile1 = () => {
 
   const router = useRouter();
 
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Images'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  const [selectedRoute, setSelectedRoute] = useState<string>('Images');
   const [productImages, setProductImages] = useState<ProductImage[]>([]); 
   const [isLoading, setIsLoading] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -89,7 +85,7 @@ useEffect(() => {
           console.log('followers', response);
           
           if (response.success && response.followers) {
-              const authenticatedUserId = localStorage.getItem('userId');
+              const authenticatedUserId = Cookies.get('userId');
               const isFollowingUser = response.followers.some(follower => follower.followerId.toString() === authenticatedUserId);
               setIsFollowing(isFollowingUser);
               setFollowersCount(response.followers.length);
@@ -105,7 +101,7 @@ useEffect(() => {
   const handleFollow = async () => {
       try {
 
-        const token = localStorage.getItem('accessToken');
+        const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In');
         return;
@@ -122,7 +118,7 @@ useEffect(() => {
   const handleUnfollow = async () => {
       try {
 
-        const token = localStorage.getItem('accessToken');
+        const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In');
         return;

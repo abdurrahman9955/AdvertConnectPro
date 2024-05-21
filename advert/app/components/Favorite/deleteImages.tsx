@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FaRegWindowClose } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { addToFavoriteImages } from '@/app/utils/favoriteImages';
+import Cookies from 'js-cookie';
 
 interface DeleteProductButtonProps {
   productId: string; 
@@ -24,7 +25,7 @@ const DeleteImages: React.FC<DeleteProductButtonProps> = ({ productId }) => {
 
     try {
       await addToFavoriteImages(productId);
-      localStorage.setItem(`favorite_${productId}`, 'false');
+      Cookies.set(`favorite_${productId}`, 'false');
       alert('Product removed from favorites successfully!');
       setOrderVisible(false); 
       window.location.reload();

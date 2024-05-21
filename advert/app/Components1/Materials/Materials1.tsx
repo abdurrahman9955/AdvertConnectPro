@@ -5,8 +5,8 @@ import Materials4 from "./Materials4";
 import Materials5 from "./Materials5";
 
 const Materials1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Materials2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  
+  const [selectedRoute, setSelectedRoute] = useState<string>('Materials2');
 
 
   return (

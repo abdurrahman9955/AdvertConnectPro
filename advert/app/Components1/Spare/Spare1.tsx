@@ -5,8 +5,8 @@ import Spare4 from "./Spare4";
 import Spare5 from "./Spare5";
 
 const Spare1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Spare2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+ 
+  const [selectedRoute, setSelectedRoute] = useState<string>('Spare2');
 
 
   return (

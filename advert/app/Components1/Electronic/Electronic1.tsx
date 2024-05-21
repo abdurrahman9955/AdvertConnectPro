@@ -5,8 +5,8 @@ import Electronic4 from "./Electronic4";
 import Electronic5 from "./Electronic5";
 
 const Electronic1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Electronic2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  
+  const [selectedRoute, setSelectedRoute] = useState<string>('Electronic2');
 
 
   return (

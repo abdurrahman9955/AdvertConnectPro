@@ -14,9 +14,9 @@ import { setQuery } from '@/app/app/searchSlice';
 
 
 const Grocery = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Grocery1'
+  
   const [SearchVisible, setSearchVisible] = useState(false);
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  const [selectedRoute, setSelectedRoute] = useState<string>('Grocery1');
 
   const handleSearch = ()=>{
     setSearchVisible(!SearchVisible);

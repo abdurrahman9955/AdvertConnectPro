@@ -5,6 +5,7 @@ import { getContacts, deleteContact } from '../utils/contact';
 import { setContacts } from '../app/contacts';
 import { useRouter } from 'next/navigation';
 import { RootState } from '../app/store';
+import Cookies from 'js-cookie';
 
 interface Contact {
     id: number;
@@ -27,14 +28,16 @@ interface Contact {
   const [expandedContacts, setExpandedContacts] = useState<number[]>([]);
   const [contactCount, setContactCount] = useState(0);
   const [loading, setLoading] = useState(false);
-
+  
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      router.push('/Sign_In');
-    } else {
-      fetchContacts();
+    if (typeof window !== 'undefined') {
+      const token = Cookies.get('accessToken');
+      if (!token) {
+        router.push('/Sign_In');
+      } else {
+         fetchContacts();
+      }
     }
   }, [router]);
   

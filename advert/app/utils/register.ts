@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import validator from 'validator';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface UserData {

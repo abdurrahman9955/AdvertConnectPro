@@ -4,6 +4,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { getBannerById } from '@/app/utils/banner';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface Profile {
   photoUrl?: string;
@@ -74,7 +75,7 @@ const ProfileBanner1 = () => {
   }, []);
 
   const handleProductClick = (profileId: any) => {
-    localStorage.setItem('profileId', profileId.toString()); 
+    Cookies.set('profileId', profileId.toString(), { expires: 360, path: '/' });
   };
 
   const handleButtonClick = () => {

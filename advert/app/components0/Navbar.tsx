@@ -16,6 +16,7 @@ import store from '@/app/app/store';
 import { RootState } from "@/app/app/store";
 import { getCurrentUser } from "@/app/utils/userToken";
 import {  signOut, useSession } from 'next-auth/react';
+import Cookies from 'js-cookie';
 
 interface UserInfo {
   firstName?: string;
@@ -45,11 +46,10 @@ const Navbar = () => {
    const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
    const [errorMessage, setErrorMessage] = useState('');
 
-   useEffect(() => {
+  useEffect(() => {
     if (session && session.user && (session.user as User).id) {
-      localStorage.setItem('userId', (session.user as User).id);
-     
-      localStorage.setItem('accessToken', "fbeae2838c3783ad69b03b656af22fbeae2838c3783ad69b03b656af2");
+      Cookies.set('accessToken', "fbeae2838c3783ad69b03b656af22fbeae2838c3783ad69b03b656af2",{ path: '/', expires: 7 });
+      Cookies.set('userId', (session.user as User).id, { path: '/', expires: 7 });
       dispatch(setAuthenticated(true));
     }
   }, [session]);
@@ -84,8 +84,8 @@ const Navbar = () => {
   const handleSignOut = async () => {
     try {
       await signOut();
-      localStorage.removeItem('userId');
-      localStorage.removeItem('accessToken');
+      Cookies.remove('userId', { path: '/' }); 
+      Cookies.remove('accessToken', { path: '/' }); 
       dispatch(setAuthenticated(false));
       router.push('/Sign_In'); 
     } catch (error:any) {

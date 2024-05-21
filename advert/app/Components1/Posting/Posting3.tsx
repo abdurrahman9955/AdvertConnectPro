@@ -10,6 +10,7 @@ import { RootState } from '@/app/app/store';
 import { useSelector } from 'react-redux';
 import { getSettings } from '@/app/utils/settings';
 import SharingImages from './media/share';
+import Cookies from 'js-cookie';
 
 interface Product {
   id: number;
@@ -121,7 +122,7 @@ const ProductVideos: React.FC = () => {
   };
 
   const handleProductClick = (productId: number) => {
-    localStorage.setItem('productId', productId.toString());
+    Cookies.set('productId', productId.toString(), { expires: 1 / 24, path: '/' });
   };
 
   const totalPages = Math.ceil(products.length / videosPerPage);

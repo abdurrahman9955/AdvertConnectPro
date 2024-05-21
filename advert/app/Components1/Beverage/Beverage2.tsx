@@ -11,6 +11,7 @@ import { RootState } from '@/app/app/store';
 import { useSelector} from 'react-redux';
 import { getSettings } from '@/app/utils/settings'; 
 import SharingImages from '../Posting/media/share';
+import Cookies from 'js-cookie';
 
 interface Product {
   id: number;
@@ -126,7 +127,7 @@ const Beverage2: React.FC = () => {
   };
 
   const handleProductClick = (productId: number) => {
-    localStorage.setItem('productId', productId.toString()); 
+    Cookies.set('productId', productId.toString(), { expires: 1 / 24, path: '/' });
   };
 
   const productsWithImages = products.filter((product) => product.mediaUrl && product.mediaUrl.length > 0);

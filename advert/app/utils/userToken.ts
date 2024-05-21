@@ -1,19 +1,20 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 export const getCurrentUser = async () => {
   try {
-    const userId = localStorage.getItem('userId');
+    
+    const userId = Cookies.get('userId');
 
     if (!userId) {
-      throw new Error('User ID not found in local storage');
+      throw new Error('User ID not found in cookies');
     }
 
-    const token = localStorage.getItem('accessToken');
-
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found in local storage');
+      throw new Error('Access token not found in cookies');
     }
 
     const response = await axios.get(`${API_BASE_URL}/userId/userInfo`,  {
@@ -33,16 +34,16 @@ export const getCurrentUser = async () => {
 
 export const deleteCurrentUser = async () => {
   try {
-    const userId = localStorage.getItem('userId');
+    
+    const userId = Cookies.get('userId');
 
     if (!userId) {
-      throw new Error('User ID not found in local storage');
+      throw new Error('User ID not found in cookies');
     }
 
-    const token = localStorage.getItem('accessToken');
-
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found in local storage');
+      throw new Error('Access token not found in cookies');
     }
 
     const response = await axios.delete(`${API_BASE_URL}/userId/deleteAccount`,  {

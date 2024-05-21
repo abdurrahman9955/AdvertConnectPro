@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getFollowing } from '@/app/utils/getFollow';
+import Cookies from 'js-cookie';
 
 const Header = () => {
   const [followingCount, setFollowingCount] = useState<number>(0);
@@ -7,7 +8,7 @@ const Header = () => {
   useEffect(() => {
     const fetchFollowingCount = async () => {
       try {
-        const userId = localStorage.getItem('userId');
+        const userId = Cookies.get('userId');
         if (!userId) {
           throw new Error('User ID not found');
         }

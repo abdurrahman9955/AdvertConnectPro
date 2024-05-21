@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';;
 import { updateFilter7, resetFilter7  } from '@/app/app/filters/filter7'; 
 import { RootState } from '@/app/app/store';
+import Cookies from 'js-cookie';
 
 
 const Cloths3 = () => {
@@ -17,7 +18,7 @@ const Cloths3 = () => {
   }, [filterState]);
 
   useEffect(() => {
-    const storedFilter = localStorage.getItem('filter7');
+    const storedFilter = Cookies.get('filter7');
     if (storedFilter) {
       const parsedFilter = JSON.parse(storedFilter);
       setFilter(parsedFilter);
@@ -42,14 +43,14 @@ const Cloths3 = () => {
       ...filter,
     };
     dispatch(updateFilter7(parsedFilter));
-    localStorage.setItem('filter7', JSON.stringify(parsedFilter));
+    Cookies.set('filter7', JSON.stringify(parsedFilter), { expires: 1, path: '/' });
     setShowResetButton(true); 
   };
 
 
   const handleReset = () => {
     dispatch(resetFilter7()); 
-    localStorage.removeItem('filter7'); 
+    Cookies.remove('filter7', { path: '/' });
     setFilter({
       city: '',
       country: '',

@@ -7,6 +7,8 @@ import session from 'express-session';
 import configurePassport from '../configurePassport.mjs';
 
 const prisma = new PrismaClient();
+const routerOtpVerification = express.Router();
+
 const ses = new SES({
   credentials: {
     accessKeyId: process.env.MY_S3_ACCESS_KEY,
@@ -15,15 +17,12 @@ const ses = new SES({
   region: process.env.MY_S3_REGION,
 });
 
-const routerOtpLogin = express.Router();
-
-
 configurePassport();
 
-routerOtpLogin.use(passport.initialize()); 
-routerOtpLogin.use(passport.session());
+routerOtpVerification.use(passport.initialize()); 
+routerOtpVerification.use(passport.session());
 
-routerOtpLogin.use(
+routerOtpVerification.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -34,7 +33,7 @@ routerOtpLogin.use(
   })
 );
 
-routerOtpLogin.post('/verify', async (req, res) => {
+routerOtpVerification.post('/verify', async (req, res) => {
   try {
     const { email, otp } = req.body;
 
@@ -48,8 +47,7 @@ routerOtpLogin.post('/verify', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-
-    if (user.otp.toString() !== otp.toString()) {
+    if (user.otp !== otp.toString()) {
       return res.status(400).json({ error: 'Invalid OTP' });
     }
     
@@ -63,9 +61,9 @@ routerOtpLogin.post('/verify', async (req, res) => {
         id: user.id,
       },
       data: {
-        otp: null,
+        otp: null, 
         otpExpiration: null,
-        isVerified: true, 
+        isVerified: true,
       },
     });
 
@@ -84,20 +82,25 @@ routerOtpLogin.post('/verify', async (req, res) => {
 
     req.session.isAuthenticated = true;
 
-    return res.status(200).json({ message: 'OTP verified successfully',
-    token,
-    userId: user.id,
-    accessToken,
-    refreshToken,
-     });
+    res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('userId', user.id, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('isAuthenticated', 'true', { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite:'none', secure: true });
 
+
+    return res.status(200).json({ message: 'OTP verified successfully',
+      token,
+      userId: user.id,
+      accessToken,
+      refreshToken,
+   });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-routerOtpLogin.post('/resend', async (req, res) => {
+routerOtpVerification.post('/resend', async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -112,7 +115,6 @@ routerOtpLogin.post('/resend', async (req, res) => {
     }
 
     const newOtp = Math.floor(100000 + Math.random() * 900000);
-    const newOtpExpiration = new Date(Date.now() + 60000);
 
     await prisma.user.update({
       where: {
@@ -120,7 +122,7 @@ routerOtpLogin.post('/resend', async (req, res) => {
       },
       data: {
         otp: newOtp.toString(),
-        otpExpiration: newOtpExpiration,
+        otpExpiration: new Date(Date.now() + 60000),
       },
     });
 
@@ -141,12 +143,17 @@ routerOtpLogin.post('/resend', async (req, res) => {
 
     req.session.isAuthenticated = true;
 
-    return res.status(200).json({ message: 'OTP resent successfully', 
+    res.cookie('accessToken', accessToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('refreshToken', refreshToken, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('userId', user.id, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: 'none', secure: true });
+    res.cookie('isAuthenticated', 'true', { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite:'none', secure: true });
+
+
+    return res.status(200).json({ message: 'OTP resent successfully',
     token,
     userId: user.id,
     accessToken,
-    refreshToken,
-   });
+    refreshToken,});
 
   } catch (error) {
     console.error(error);
@@ -166,15 +173,15 @@ async function sendSESOtp(email, otp) {
 
           Your One-Time Password (OTP) is: ${otp}. This code is valid for 60 seconds.
    
-          Please use this OTP to complete your Login on advertConnectPro.com .
+          Please use this OTP to complete your registration on advertConnectPro.com .
    
           Note: Do not share this OTP with anyone for security reasons. If you did not request
 
-         this OTP, please ignore this message.`,
+         this OTP, please ignore this message. `,
         },
       },
       Subject: {
-        Data: 'Your OTP for login to your account',
+        Data: 'Your OTP for sign-up to advertConnectPro.com',
       },
     },
     Source: process.env.AUTH_EMAIL,
@@ -189,4 +196,4 @@ async function sendSESOtp(email, otp) {
   }
 }
 
-export default routerOtpLogin;
+export default routerOtpVerification;

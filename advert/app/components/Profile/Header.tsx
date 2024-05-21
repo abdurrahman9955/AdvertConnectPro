@@ -16,6 +16,7 @@ import { getBanner } from '@/app/utils/banner';
 import { getVideo } from '@/app/utils/videos';
 import { RootState } from '@/app/app/store';
 import { FaCloudUploadAlt } from "react-icons/fa";
+import Cookies from 'js-cookie';
 
 
 interface Product {
@@ -71,9 +72,7 @@ interface UserInfo {
 const Header = () => {
 
   const router = useRouter();
-
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Post'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  const [selectedRoute, setSelectedRoute] = useState<string>('Post');
   const dispatch = useDispatch();
   const [followersCount, setFollowersCount] = useState<number>(0);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
@@ -164,7 +163,7 @@ const Header = () => {
   useEffect(() => {
     const fetchProfileImage = async () => {
       try {
-        const userId = localStorage.getItem('userId');
+        const userId = Cookies.get('userId');
         if (!userId) {
           throw new Error('User ID not found');
         }
@@ -189,7 +188,7 @@ const Header = () => {
     
     try {
 
-      const token = localStorage.getItem('accessToken');
+      const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In'); 
         return;
@@ -213,7 +212,7 @@ const Header = () => {
   const handleUpdate = async () => {
     try {
 
-      const token = localStorage.getItem('accessToken');
+      const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In'); 
         return;
@@ -237,7 +236,7 @@ const Header = () => {
 
     try {
 
-      const token = localStorage.getItem('accessToken');
+      const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In'); 
         return;

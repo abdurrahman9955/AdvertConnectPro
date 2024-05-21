@@ -16,8 +16,8 @@ const PrivacyHome = () => {
 
   const router = useRouter();
 
-  const initialRoute = localStorage.getItem('selectedRoute') || 'PrivacyUse'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+ 
+  const [selectedRoute, setSelectedRoute] = useState<string>('PrivacyUse');
 
   return (
     <div className="w-full ">

@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import Cookies from 'js-cookie';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -36,11 +37,15 @@ const handleApiResponse = <T>(response: AxiosResponse<ApiResponse<T>>): T => {
 export const getFollowing = async (userId:number): Promise<Follower[]> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse<Follower[]>> = 
@@ -61,11 +66,15 @@ export const getFollowing = async (userId:number): Promise<Follower[]> => {
 export const unfollowUser = async ( followingId: number): Promise<void> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse<void>> = await axios.delete(

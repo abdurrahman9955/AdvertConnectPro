@@ -5,8 +5,8 @@ import Medical4 from "./Medical4";
 import Medical5 from "./Medical5";
 
 const Medical1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Medical2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+ 
+  const [selectedRoute, setSelectedRoute] = useState<string>('Medical2');
 
 
   return (

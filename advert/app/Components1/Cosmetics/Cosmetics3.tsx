@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';;
 import { updateFilter9, resetFilter9  } from '@/app/app/filters/filter9'; 
 import { RootState } from '@/app/app/store';
+import Cookies from 'js-cookie';
 
 
 const Cosmetics3 = () => {
@@ -17,7 +18,7 @@ const Cosmetics3 = () => {
   }, [filterState]);
 
   useEffect(() => {
-    const storedFilter = localStorage.getItem('filter9');
+    const storedFilter = Cookies.get('filter9');
     if (storedFilter) {
       const parsedFilter = JSON.parse(storedFilter);
       setFilter(parsedFilter);
@@ -42,14 +43,14 @@ const Cosmetics3 = () => {
       ...filter,
     };
     dispatch(updateFilter9(parsedFilter));
-    localStorage.setItem('filter9', JSON.stringify(parsedFilter));
+    Cookies.set('filter9', JSON.stringify(parsedFilter), { expires: 1, path: '/' });
     setShowResetButton(true); 
   };
 
 
   const handleReset = () => {
     dispatch(resetFilter9()); 
-    localStorage.removeItem('filter9'); 
+    Cookies.remove('filter9', { path: '/' });
     setFilter({
       city: '',
       country: '',

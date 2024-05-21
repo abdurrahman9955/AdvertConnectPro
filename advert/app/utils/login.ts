@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import * as dotenv from "dotenv";
+import Cookies from 'js-cookie';
 
 dotenv.config();
 

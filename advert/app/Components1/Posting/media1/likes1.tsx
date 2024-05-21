@@ -3,6 +3,7 @@ import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
 import { BiDislike, BiSolidDislike} from "react-icons/bi";
 import { likeBanner, getLikeBanner } from '@/app/utils/likeBanner';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface LikeButtonProps {
   productId: string;
@@ -19,7 +20,7 @@ const LikeBannerProduct1: React.FC<LikeButtonProps> = ({ productId }) => {
 
   useEffect(() => {
 
-    const localStorageLiked = localStorage.getItem(`liked_${productId}`);
+    const localStorageLiked = Cookies.get(`liked_${productId}`);
     if (localStorageLiked === 'true') { 
       setLiked(true);
     }
@@ -41,7 +42,7 @@ const LikeBannerProduct1: React.FC<LikeButtonProps> = ({ productId }) => {
 
   useEffect(() => {
 
-    const localStorageLiked = localStorage.getItem(`liked_${productId}`);
+    const localStorageLiked = Cookies.get(`liked_${productId}`);
     if (localStorageLiked === 'false') { 
       setDisLiked(true);
     }
@@ -66,7 +67,7 @@ const LikeBannerProduct1: React.FC<LikeButtonProps> = ({ productId }) => {
   const handleLikeClick = async () => {
     try {
 
-      const token = localStorage.getItem('accessToken');
+      const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In');
         return;
@@ -74,7 +75,7 @@ const LikeBannerProduct1: React.FC<LikeButtonProps> = ({ productId }) => {
 
       setLoading(true);
           await likeBanner(productId);
-          localStorage.setItem(`liked_${productId}`, 'true');
+          Cookies.set(`liked_${productId}`, 'true', { expires: 360, path: '/' });
           setLikeCount((prevCount) => prevCount + 1); 
           setLiked(true);
          
@@ -89,7 +90,7 @@ const LikeBannerProduct1: React.FC<LikeButtonProps> = ({ productId }) => {
   const handleDisLikeClick = async () => {
     try {
 
-      const token = localStorage.getItem('accessToken');
+      const token = Cookies.get('accessToken');
       if (!token) {
         router.push('/Sign_In');
         return;
@@ -97,7 +98,7 @@ const LikeBannerProduct1: React.FC<LikeButtonProps> = ({ productId }) => {
 
       setLoading(true);
           await likeBanner(productId);
-          localStorage.setItem(`liked_${productId}`, 'false');
+          Cookies.set(`liked_${productId}`, 'false', { expires: 360, path: '/' });
           setLikeCount((prevCount) => prevCount - 1); 
           setDisLiked(true);
         

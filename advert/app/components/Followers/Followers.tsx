@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import FollowersList from './getFollowers'; 
 import { getFollowers } from '@/app/utils/followers';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 
 const Followers = () => {
@@ -12,10 +13,12 @@ const Followers = () => {
   const [followersCount, setFollowersCount] = useState<number>(0);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      router.push('/Sign_In');
-    } 
+   
+      const token = Cookies.get('accessToken');
+      if (!token) {
+        router.push('/Sign_In');
+      }
+    
   }, [router]);
 
   

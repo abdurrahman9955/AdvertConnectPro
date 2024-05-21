@@ -4,6 +4,7 @@ import { uploadBanner, deleteBanner } from '../utils/banner';
 import Image from 'next/image';
 import { FiTrash } from 'react-icons/fi'; 
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface BannerUploadProps {
   onUploadComplete: () => void; 
@@ -32,10 +33,12 @@ const BannerUpload: React.FC<BannerUploadProps> = ({ onUploadComplete}) => {
   const handleUpload = async () => {
     try {
 
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        router.push('/Sign_In');
-        return;
+      if (typeof window !== 'undefined') {
+        const token = Cookies.get('accessToken');
+        if (!token) {
+          router.push('/Sign_In');
+          return null; 
+        }
       }
 
       if (selectedFiles.length === 0) {

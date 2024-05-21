@@ -23,6 +23,6 @@
     }
   },
 
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/api/auth/otp/sendSMSOTP/sms.ts", "app/api/auth/otp/sendEmailOTP/email.ts", "app/api/comments/commentController.ts", "app/api/notifications/notifications.mjs", "app/api/chats/chats.mjs", "app/components0/videoControl.tsx", "settings.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "api/auth/otp/sendSMSOTP/sms.ts", "api/auth/otp/sendEmailOTP/email.ts", "api/comments/commentController.ts", "api/notifications/notifications.mjs", "api/chats/chats.mjs", "app/components0/videoControl.tsx", "settings.js"],
   "exclude": ["node_modules"]
 }

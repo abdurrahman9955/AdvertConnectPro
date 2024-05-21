@@ -5,8 +5,8 @@ import Photos1 from "./Small/Photos1";
 import Banner1 from "./Small/Banner1";
 
 const Videos = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Photos1'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+
+  const [selectedRoute, setSelectedRoute] = useState<string>('Photos1');
 
 
   return (

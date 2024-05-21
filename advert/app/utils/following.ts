@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface ApiResponse {
@@ -31,7 +31,7 @@ interface User {
 export const getFollowersCount = async (): Promise<ApiResponse> => {
   try {
 
-    const profileId = localStorage.getItem('profileId');
+    const profileId = Cookies.get('profileId');
 
     const response: AxiosResponse<ApiResponse> = await 
     axios.get(`${API_BASE_URL}/following/followers`,
@@ -50,7 +50,7 @@ export const getFollowersCount = async (): Promise<ApiResponse> => {
 export const getFollowingCount = async (): Promise<ApiResponse> => {
   try {
 
-    const profileId = localStorage.getItem('profileId');
+    const profileId = Cookies.get('profileId');
 
     const response: AxiosResponse<ApiResponse> = await 
     axios.get(`${API_BASE_URL}/following/following`,
@@ -69,11 +69,11 @@ export const getFollowingCount = async (): Promise<ApiResponse> => {
 export const followUser = async (): Promise<ApiResponse> => {
   try {
 
-    const id = localStorage.getItem('userId');
+    const id = Cookies.get('userId');
 
-    const profileId = localStorage.getItem('profileId');
+    const profileId = Cookies.get('profileId');
     
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
     if (!token) {
       throw new Error('Access token not found');
     }
@@ -91,7 +91,7 @@ export const followUser = async (): Promise<ApiResponse> => {
       }
     );
 
-    localStorage.setItem(`followStatus_${profileId}`, 'following');
+    Cookies.set(`followStatus_${profileId}`, 'following');
 
     return response.data;
   } catch (error:any) {
@@ -103,13 +103,17 @@ export const followUser = async (): Promise<ApiResponse> => {
 export const unfollowUser = async (): Promise<ApiResponse> => {
   try {
 
-    const id = localStorage.getItem('userId');
+    const profileId = Cookies.get('profileId');
 
-    const profileId = localStorage.getItem('profileId');
+    const id = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!id) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<ApiResponse> = await axios.delete(
@@ -124,7 +128,7 @@ export const unfollowUser = async (): Promise<ApiResponse> => {
       }
     );
 
-    localStorage.removeItem(`followStatus_${profileId}`);
+    Cookies.remove(`followStatus_${profileId}`);
 
     return response.data;
   } catch (error:any) {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { dislikeBanner, getDislikeBanner } from '@/app/utils/dislikeBanner';
 import { BiDislike, BiSolidDislike} from "react-icons/bi";
+import Cookies from 'js-cookie';
 
 interface DislikeButtonProps {
   productId: string;

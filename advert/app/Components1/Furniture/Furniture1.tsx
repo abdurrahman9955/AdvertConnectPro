@@ -5,8 +5,8 @@ import Furniture4 from "./Furniture4";
 import Furniture5 from "./Furniture5";
 
 const Furniture1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Furniture2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  
+  const [selectedRoute, setSelectedRoute] = useState<string>('Furniture2');
 
 
   return (

@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { FiTrash } from 'react-icons/fi'; 
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import Cookies from 'js-cookie';
 
 const Publish3 = ()  => {
 
@@ -102,11 +103,14 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   setLoading(true);
 
   try {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      router.push('/Sign_In');
-      return;
-    }
+
+    
+      const token = Cookies.get('accessToken');
+      if (!token) {
+        router.push('/Sign_In');
+        return null; 
+      }
+    
 
     const formDataToSend = new FormData();
 
@@ -177,7 +181,9 @@ if (loading) {
           international
           name='phoneNumber'
           defaultCountry="US"
+          //@ts-ignore
           value={formData.phoneNumber}
+          //@ts-ignore
           onChange={(phone: string) => setFormData({ ...formData, phoneNumber: phone })}
           inputProps={{
           className: 'custom-style', 

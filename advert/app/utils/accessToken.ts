@@ -1,4 +1,4 @@
-
+import Cookies from 'js-cookie';
 interface ApiResponse {
     success: boolean;
     message?: string;
@@ -13,13 +13,13 @@ interface AuthApiResponse extends ApiResponse {
 
 export  const accessToken = (response: AuthApiResponse): void => {
     const { accessToken, refreshToken, expiration, ...responseData } = response;
-  
+ 
     if (accessToken && refreshToken) {
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
+      Cookies.set('accessToken', accessToken);
+      Cookies.set('refreshToken', refreshToken);
   
       const expirationTime = Date.now() + expiration * 1000;
-      localStorage.setItem('accessTokenExpiry', expirationTime.toString());
+      Cookies.set('accessTokenExpiry', expirationTime.toString());
     }
   
     if (responseData.message) {

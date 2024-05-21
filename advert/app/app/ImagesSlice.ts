@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getImages } from '@/app/utils/images';
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
+  //@ts-ignore
     const response = await getImages();
     return response; 
   });

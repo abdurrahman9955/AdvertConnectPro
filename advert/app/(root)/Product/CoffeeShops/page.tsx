@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import Navbar1 from '@/app/components0/Navbar1'
 import Coffee from '@/app/Components1/Coffee/Coffee'

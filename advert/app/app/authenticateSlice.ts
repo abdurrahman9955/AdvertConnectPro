@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 
 interface AuthState {
   isAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
-  isAuthenticated: localStorage.getItem('isAuthenticated') === 'true', 
+  isAuthenticated: Cookies.get('isAuthenticated') === 'true', 
 };
 
 const authenticateSlice = createSlice({
@@ -14,7 +15,7 @@ const authenticateSlice = createSlice({
   reducers: {
     setAuthenticated: (state, action: PayloadAction<boolean>) => {
       state.isAuthenticated = action.payload;
-      localStorage.setItem('isAuthenticated', action.payload.toString()); 
+      Cookies.set('isAuthenticated', action.payload.toString(), { path: '/', expires: 7 });
     },
   },
 });

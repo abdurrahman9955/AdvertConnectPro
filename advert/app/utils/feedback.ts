@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { Dispatch } from 'redux';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface Feedback {
@@ -26,9 +26,9 @@ interface AuthApiResponse extends ApiResponse {
 export const getFeedbacks = async ( ): Promise<ApiResponse<Feedback[]>> => {
   try {
 
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<Feedback[]> = await axios.get(`${API_BASE_URL}/feedbacks/feedback`,
@@ -79,9 +79,9 @@ export const submitFeedback = async (dispatch: Dispatch, feedbackData: Feedback)
 export const deleteFeedback = async (feedbackId: number): Promise<ApiResponse> => {
   try {
 
-    const token = localStorage.getItem('accessToken');
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<{ message: string }> = await axios.delete(

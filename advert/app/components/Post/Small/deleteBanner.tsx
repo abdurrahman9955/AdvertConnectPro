@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { deleteBanner } from '@/app/utils/banner';
 import { FaRegWindowClose } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import Cookies from 'js-cookie';
 
 interface DeleteProductButtonProps {
   productId: number; 

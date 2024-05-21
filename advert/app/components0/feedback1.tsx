@@ -5,6 +5,7 @@ import { getFeedbacks, deleteFeedback } from '../utils/feedback';
 import { getFeedbacksSuccess, getFeedbacksFailure,} from '../app/feedbacks';
 import { RootState } from '../app/store';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface Feedback {
   id: number;
@@ -28,11 +29,13 @@ const Feedback1: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      router.push('/Sign_In');
-    } else {
-      fetchFeedbacks();
+    if (typeof window !== 'undefined') {
+      const token = Cookies.get('accessToken');
+      if (!token) {
+        router.push('/Sign_In');
+      } else {
+         fetchFeedbacks();
+      }
     }
   }, [router]);
 

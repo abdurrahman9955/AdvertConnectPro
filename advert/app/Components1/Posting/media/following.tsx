@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { getFollowingCount } from '@/app/utils/followers'; 
+import Cookies from 'js-cookie';
 
 interface UserProps {
   userId: string; 

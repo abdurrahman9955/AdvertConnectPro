@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import * as dotenv from 'dotenv';
+import Cookies from 'js-cookie';
 
 dotenv.config();
 
@@ -54,11 +55,15 @@ interface BannerResponse {
 export const uploadBanner = async (formData: FormData): Promise<BannerResponse> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<BannerResponse> = await axios.post(
@@ -77,7 +82,7 @@ export const uploadBanner = async (formData: FormData): Promise<BannerResponse> 
       const banners = response.data.banners;
       if (banners) {
       const bannerId = banners[0].id;
-      localStorage.setItem('bannerId', bannerId.toString());
+      Cookies.set('bannerId', bannerId.toString());
       }
      
     }
@@ -92,11 +97,15 @@ export const uploadBanner = async (formData: FormData): Promise<BannerResponse> 
 export const deleteBanner = async (productId:number): Promise<BannerResponse> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     const response: AxiosResponse<BannerResponse> = await axios.delete(
@@ -122,13 +131,17 @@ export const deleteBanner = async (productId:number): Promise<BannerResponse> =>
 export const editBanner = async (bannerId: number): Promise<BannerResponse> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      throw new Error('Access token not found');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
     }
-    
+
+    const token = Cookies.get('accessToken');
+    if (!token) {
+      throw new Error('Access token not found in cookies');
+    }
+   
     const response: AxiosResponse<BannerResponse> = await axios.put(
       `${API_BASE_URL}/banner/edit/${bannerId}`,
      {},
@@ -151,11 +164,15 @@ export const editBanner = async (bannerId: number): Promise<BannerResponse> => {
 export const getBanner = async (filter: FilterState, searchQuery?:string): Promise<BannerResponse> => {
   try {
 
-    const userId = localStorage.getItem('userId');
+    const userId = Cookies.get('userId');
 
-    const token = localStorage.getItem('accessToken');
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
+
+    const token = Cookies.get('accessToken');
     if (!token) {
-      throw new Error('Access token not found');
+      throw new Error('Access token not found in cookies');
     }
 
     let apiUrl = `${API_BASE_URL}/banner/getBanner?city=${filter.city}&country=${filter.country}&state=${filter.state}&fullAddress=${filter.fullAddress}&minPrice=${filter.minPrice}&maxPrice=${filter.maxPrice}&company=${filter.company}&name=${filter.name}&types=${filter.types}&categories=${filter.categories}`;
@@ -183,7 +200,12 @@ export const getBanner = async (filter: FilterState, searchQuery?:string): Promi
 export const getBannerByProfileId = async (): Promise<BannerResponse> => {
   try {
 
-    const userId = localStorage.getItem('profileId');
+    
+    const userId = Cookies.get('profileId');
+
+    if (!userId) {
+      throw new Error('User ID not found in cookies');
+    }
     
     const response: AxiosResponse<BannerResponse> = await axios.get(`${API_BASE_URL}/banner/getBannerByProfileId`,
     
@@ -231,8 +253,8 @@ export const getBanners = async (filter: FilterState, searchQuery?:string): Prom
 export const getBannerById = async (): Promise<BannerResponse> => {
   try {
 
-    const productId = localStorage.getItem('productId');
-    
+    const productId = Cookies.get('productId');
+   
     const response: AxiosResponse<BannerResponse> = await axios.get(`${API_BASE_URL}/banner/getBannerById`,
     {
       headers: {

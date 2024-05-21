@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { FaRegUserCircle } from "react-icons/fa";
 import { formatDistanceToNow } from 'date-fns';
+import Cookies from 'js-cookie';
 
 interface CommentBanner {
   id: number;

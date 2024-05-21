@@ -3,6 +3,7 @@ import { FaFacebook, FaTwitter, FaInstagram, FaEnvelope, FaWhatsapp, FaTelegram,
 import { FaShareNodes } from "react-icons/fa6";
 import { FaWhatsappSquare } from "react-icons/fa";
 import { FaRegWindowClose } from "react-icons/fa";
+import Cookies from 'js-cookie';
 
 interface ProductSharingProps {
   productName: string;

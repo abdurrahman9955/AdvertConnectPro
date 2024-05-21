@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaRegUserCircle } from "react-icons/fa";
+import Cookies from 'js-cookie';
 
 const OrderImage: React.FC = () => {
   const [orders, setOrders] = useState<any[]>([]);
@@ -9,8 +10,8 @@ const OrderImage: React.FC = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const userId = localStorage.getItem('userId');
-        const token = localStorage.getItem('accessToken');
+        const userId = Cookies.get('userId');
+        const token = Cookies.get('accessToken');
         if (!token || !userId) {
           throw new Error('Access token or user ID not found');
         }

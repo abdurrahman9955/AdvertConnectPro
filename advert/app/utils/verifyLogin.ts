@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface ApiResponse {
@@ -20,13 +20,13 @@ interface ResendApiResponse extends AuthApiResponse {
 }
 
 const handleAuthResponse = (response: AuthApiResponse): void => {
-  const { accessToken, refreshToken, expiration, userId, ...responseData } = response;
+  const { accessToken, refreshToken, userId, ...responseData } = response;
 
   if (accessToken && refreshToken && userId) {
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    localStorage.setItem('userId', userId);
-    localStorage.setItem('isAuthenticated', 'true');
+    Cookies.set('accessToken', accessToken, { path: '/', expires: 7 });
+    Cookies.set('refreshToken', refreshToken, { path: '/', expires: 7 });
+    Cookies.set('userId', userId, { path: '/', expires: 7 });
+    Cookies.set('isAuthenticated', 'true', { path: '/', expires: 7 });
   }
 
   if (responseData.message) {

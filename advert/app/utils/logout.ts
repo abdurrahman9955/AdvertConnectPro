@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface LogoutResponse {
@@ -15,12 +15,10 @@ export const logout = async (): Promise<{ success: boolean; message?: string }> 
     if (response.status === 200) {
       const responseData = response.data;
 
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('isAuthenticated');
-      localStorage.removeItem('userId');
-
-      console.log('Logout successful:', responseData);
+      Cookies.remove('accessToken', { path: '/' });
+      Cookies.remove('refreshToken', { path: '/' });
+      Cookies.remove('userId', { path: '/' });
+      Cookies.set('isAuthenticated', 'false', { path: '/', expires: 7 });
       return { success: true, message: responseData.message };
     } else {
       console.error('Error during logout:', response.data.error);

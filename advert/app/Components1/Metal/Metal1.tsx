@@ -5,8 +5,8 @@ import Metal4 from "./Metal4";
 import Metal5 from "./Metal5";
 
 const Metal1 = () => {
-  const initialRoute = localStorage.getItem('selectedRoute') || 'Metal2'
-  const [selectedRoute, setSelectedRoute] = useState<string>(initialRoute);
+  
+  const [selectedRoute, setSelectedRoute] = useState<string>('Metal2');
 
 
   return (

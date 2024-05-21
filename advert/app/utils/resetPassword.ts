@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import * as dotenv from 'dotenv';
+import Cookies from 'js-cookie';
 
 dotenv.config();
 
@@ -36,7 +37,28 @@ interface ForgotPasswordResponse {
   userId: string;
   otp: number;
   error: string;
+  expiration: number;
 }
+
+const handleAuthResponse = (response: ForgotPasswordResponse): void => {
+  const { accessToken, refreshToken, userId, ...responseData } = response;
+
+  if (accessToken && refreshToken && userId) {
+   
+    Cookies.set('accessToken', accessToken, { path: '/', expires: 7 });
+    Cookies.set('refreshToken', refreshToken, { path: '/', expires: 7 });
+    Cookies.set('userId', userId, { path: '/', expires: 7 });
+    Cookies.set('isAuthenticated', 'true', { path: '/', expires: 7 });
+    
+  }
+
+  if (responseData.message) {
+    console.log(responseData.message);
+  } else if (responseData.error) {
+    console.error(responseData.error);
+    throw new Error(responseData.error);
+  }
+};
 
 export const forgotPassword = async (forgotPasswordData: ForgotPasswordData): Promise<ForgotPasswordResponse> => {
   try {
@@ -53,14 +75,7 @@ export const forgotPassword = async (forgotPasswordData: ForgotPasswordData): Pr
 
     if (response.status === 200) {
       const responseData = response.data;
-
-      console.log('Forgot Password successful:', responseData);
-
-      localStorage.setItem('userId', responseData.userId);  
-      localStorage.setItem('accessToken', responseData.accessToken);
-      localStorage.setItem('refreshToken', responseData.refreshToken);
-      localStorage.setItem('isAuthenticated', 'true');
-
+      handleAuthResponse(responseData)
       //@ts-ignore
       return { success: true, ...responseData };
     } else {
@@ -87,12 +102,7 @@ export const verifyOtp = async (email: string, otp: string): Promise<ForgotPassw
 
     if (response.status === 200) {
       const responseData = response.data;
-
-      console.log('OTP Verification successful:', responseData);
-      localStorage.setItem('userId',responseData.userId);
-      localStorage.setItem('accessToken', responseData.accessToken);
-      localStorage.setItem('refreshToken', responseData.refreshToken);
-      localStorage.setItem('isAuthenticated', 'true');
+      handleAuthResponse(responseData);
       //@ts-ignore
       return { success: true, ...responseData };
     } else {
@@ -119,12 +129,7 @@ export const resendOtp = async (email: string): Promise<ForgotPasswordResponse> 
 
     if (response.status === 200) {
       const responseData = response.data;
-
-      console.log('OTP Resend successful:', responseData);
-      localStorage.setItem('userId',responseData.userId);
-      localStorage.setItem('accessToken', responseData.accessToken);
-      localStorage.setItem('refreshToken', responseData.refreshToken);
-      localStorage.setItem('isAuthenticated', 'true');
+      handleAuthResponse(responseData);
       //@ts-ignore
       return { success: true, ...responseData };
     } else {

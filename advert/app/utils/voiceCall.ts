@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-
+import Cookies from 'js-cookie';
 const API_BASE_URL = process.env.MY_APP_BASE_URL || 'http://localhost:3500';
 
 interface ApiResponse {
@@ -20,7 +20,7 @@ interface VoiceCallResponse {
 
 class VoiceCallUtils {
   private static getHeaders(): AxiosRequestConfig {
-    const token = localStorage.getItem('userId');
+    const token = Cookies.get('userId');
 
     return {
       headers: {

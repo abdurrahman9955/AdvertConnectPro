@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BiDislike, BiSolidDislike} from "react-icons/bi";
 import { likeImages, getLikeImages } from '@/app/utils/likeImages';
+import Cookies from 'js-cookie';
 
 interface DislikeButtonProps {
   productId: string;
@@ -14,7 +15,7 @@ const DislikeImageProduct: React.FC<DislikeButtonProps> = ({ productId }) => {
 
   useEffect(() => {
 
-    const localStorageLiked = localStorage.getItem(`liked_${productId}`);
+    const localStorageLiked = Cookies.get(`liked_${productId}`);
     if (localStorageLiked === 'false') { 
       setLiked(true);
     }
@@ -41,7 +42,7 @@ const DislikeImageProduct: React.FC<DislikeButtonProps> = ({ productId }) => {
       setLoading(true);
           await likeImages(productId);
 
-          localStorage.setItem(`liked_${productId}`, 'false');
+          Cookies.set(`liked_${productId}`, 'false');
           setLikeCount((prevCount) => prevCount - 1); 
           setLiked(true);
         

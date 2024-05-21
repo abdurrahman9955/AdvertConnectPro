@@ -8,6 +8,7 @@ import { FaShareNodes } from "react-icons/fa6";
 import Link from 'next/link';
 import { getSettings } from '@/app/utils/settings'; 
 import SharingImages from '../media/share';
+import Cookies from 'js-cookie';
 
 interface Product {
   id: number;
@@ -118,7 +119,7 @@ const Videos2: React.FC = () => {
   };
 
   const handleProductClick = (productId: number) => {
-    localStorage.setItem('productId', productId.toString()); 
+    Cookies.set('productId', productId.toString(), { expires: 1 / 24, path: '/' });
   };
 
   return (
