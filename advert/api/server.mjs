@@ -112,7 +112,7 @@ app.use(
 );*/
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin',"http://localhost:3000",'https://advertconnectpro.com');
+  res.setHeader('Access-Control-Allow-Origin','https://advertconnectpro.com');
   res.setHeader('Access-Control-Allow-Methods', '*');
   res.setHeader('Access-Control-Allow-Headers', '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -132,7 +132,7 @@ prisma.$connect().then(() => {
 
 const server = createServer(app);
 const io = new Server(server);
-const PORT = process.env.PORT || 3500;
+const PORT = process.env.MY_APP_BASE_URL || 3500;
 
 app.use(bodyParser.json());
 app.use(cookieParser());
