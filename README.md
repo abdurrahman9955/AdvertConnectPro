@@ -13,11 +13,6 @@ Sign up for an account on AdvertConnectPro.
 Upload your advertising assets (images, banners, videos).
 Customize your advertising campaigns according to your preferences.
 Launch your campaigns and track their performance through our analytics dashboard.
-Contributing
-We welcome contributions from the community! If you have any ideas for improvements or new features, feel free to open an issue or submit a pull request.
-
-License
-This project is licensed under the MIT License.
 
 Contact
 Have questions or need support? Reach out to us at https://advertconnectpro.com/contact.
