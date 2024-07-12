@@ -1,9 +1,0 @@
-{
-    "watch": ["app"],
-    "ext": "ts",
-    "exec": "ts-node"
-  }
-  
-
-
- 

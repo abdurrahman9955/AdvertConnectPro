@@ -1,0 +1,710 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                     Int              @id @default(autoincrement())
+  email                  String?          @unique
+  firstName              String?
+  lastName               String?
+  password               String?
+  otp                    String?
+  otpExpiration          DateTime?
+  isVerified             Boolean          @default(false)
+  resetToken             String?
+  resetTokenExpiry       DateTime?
+  googleId               String?          @unique
+  facebookId             String?          @unique
+  isBlocked              Boolean          @default(false)
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+  role                   UserRole         @default(USER)
+  isAdmin                Boolean          @default(false)
+  isEmployee             Boolean          @default(false)
+  followerCount          Int              @default(0)
+  followingCount         Int              @default(0)
+  admin                  Admin[]
+  Chats                  Chat[]
+  comments               Comment[]
+  commentBanner          CommentBanner[]
+  commentVideos          CommentVideos[]
+  dislikes               Dislike[]
+  dislikeBanner          DislikeBanner[]
+  dislikeVideos          DislikeVideos[]
+  downloads              Download[]
+  employee               Employee?
+  favorite               Favorite[]
+  favoriteBanner         FavoriteBanner[]
+  favoriteVideos         FavoriteVideos[]
+  followers              Follower[]
+  following              Following[]
+  ReceivedFriendRequests FriendRequest[]  @relation("ReceivedFriendRequests")
+  SentFriendRequests     FriendRequest[]  @relation("SentFriendRequests")
+  friends                Friendship[]     @relation("Friend")
+  requests               Friendship[]
+  likes                  Like[]
+  likeBanner             LikeBanner[]
+  likeVideos             LikeVideos[]
+  notifications          Notification?
+  productImage           ProductImages[]
+  productBanner          ProductBanners[]
+  productVideo           ProductVideos[]
+  productOrders          ProductOrder[]
+  bannerOrder            BannerOrder[]
+  videosOrder            VideosOrder[]
+  profile                Profile?
+  rating                 Rating[]
+  ratingBanner           Ratingbanner[]
+  ratingVideos           RatingVideos[]
+  settings               Settings?
+  share                  Share[]
+  VideoCalls             VideoCall[]
+  VoiceCalls             VoiceCall[]
+  emailVerified          DateTime?        @map("email_verified")
+  image                  String?
+  name                   String?
+  accounts               Account[]
+  sessions               Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            Int     @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       Int      @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+model ProductImages {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  productId    String?
+  product      String?
+  types        String?
+  categories   String?
+  phoneNumber  String?
+  phoneCode    String?
+  price        Decimal?
+  currency     String?
+  country      String?
+  state        String?
+  province     String?
+  city         String?
+  fullAddress  String?
+  emailAddress String?
+  productName  String?
+  companyLink  String?
+  companyName  String?
+  description  String?
+  mediaType    MediaType
+  mediaUrl     String[]
+  uploadedBy   Int       @map("uploaded_by")
+  isDeleted    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  User         User      @relation(fields: [userId], references: [id])
+}
+
+model ProductBanners {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  productId    String?
+  product      String?
+  types        String?
+  categories   String?
+  phoneNumber  String?
+  phoneCode    String?
+  price        Decimal?
+  currency     String?
+  country      String?
+  state        String?
+  province     String?
+  city         String?
+  fullAddress  String?
+  emailAddress String?
+  productName  String?
+  companyLink  String?
+  companyName  String?
+  description  String?
+  mediaType    MediaType
+  mediaUrl     String[]
+  uploadedBy   Int       @map("uploaded_by")
+  isDeleted    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  User         User      @relation(fields: [userId], references: [id])
+}
+
+model ProductVideos {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  productId    String?
+  product      String?
+  types        String?
+  categories   String?
+  phoneNumber  String?
+  phoneCode    String?
+  price        Decimal?
+  currency     String?
+  country      String?
+  state        String?
+  province     String?
+  city         String?
+  fullAddress  String?
+  emailAddress String?
+  productName  String?
+  companyLink  String?
+  companyName  String?
+  description  String?
+  mediaType    MediaType
+  mediaUrl     String
+  thumbnailUrl String?
+  uploadedBy   Int       @map("uploaded_by")
+  isDeleted    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  User         User      @relation(fields: [userId], references: [id])
+}
+
+model ProductMedia {
+  id         Int       @id @default(autoincrement())
+  productId  Int
+  userId     Int
+  mediaType  MediaType
+  mediaUrl   String
+  uploadedBy Int       @map("uploaded_by")
+  isDeleted  Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  content   String
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model CommentBanner {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  content   String
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model CommentVideos {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  content   String
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model Friendship {
+  id        Int              @id @default(autoincrement())
+  userId    Int
+  friendId  Int
+  status    FriendshipStatus
+  isBlocked Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  Friend    User             @relation("Friend", fields: [friendId], references: [id])
+  User      User             @relation(fields: [userId], references: [id])
+}
+
+model Profile {
+  id        Int         @id @default(autoincrement())
+  userId    Int         @unique
+  photoUrl  String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  followers Follower[]
+  following Following[]
+  User      User        @relation(fields: [userId], references: [id])
+}
+
+model Settings {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique
+  country      String?
+  currency     String?
+  continent    String?
+  state        String?
+  province     String?
+  fullAddress  String?
+  emailAddress String?
+  phoneNumber  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  User         User     @relation(fields: [userId], references: [id])
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  reason    String
+  statement String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  name      String
+  reason    String
+  statement String
+  rating    Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  content   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model Download {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model Like {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model LikeBanner {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model LikeVideos {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model Dislike {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model DislikeBanner {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model DislikeVideos {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model Rating {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  value     Float
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model Ratingbanner {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  value     Float
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model RatingVideos {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  value     Float
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model Share {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  productId   Int
+  mediaType   MediaType
+  sharedUrl   String?
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  User        User      @relation(fields: [userId], references: [id])
+}
+
+model Favorite {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model FavoriteBanner {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model FavoriteVideos {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  mediaType MediaType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+model Follower {
+  id               Int      @id @default(autoincrement())
+  followerId       Int
+  followingId      Int
+  isBlocked        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  User             User     @relation(fields: [followerId], references: [id])
+  FollowingProfile Profile  @relation(fields: [followingId], references: [userId])
+}
+
+model Following {
+  id               Int      @id @default(autoincrement())
+  followerId       Int
+  followingId      Int
+  isBlocked        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  User             User     @relation(fields: [followerId], references: [id])
+  FollowingProfile Profile  @relation(fields: [followingId], references: [userId])
+}
+
+model FriendRequest {
+  id           Int              @id @default(autoincrement())
+  senderId     Int
+  receiverId   Int
+  status       FriendshipStatus @default(PENDING)
+  isBlocked    Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  ReceiverUser User             @relation("ReceivedFriendRequests", fields: [receiverId], references: [id])
+  SenderUser   User             @relation("SentFriendRequests", fields: [senderId], references: [id])
+}
+
+model ProductOrder {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  productId   Int
+  fullName    String?
+  email       String?
+  phoneNumber String?
+  fullAddress String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  User        User     @relation(fields: [userId], references: [id])
+}
+
+model BannerOrder {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  productId   Int
+  fullName    String?
+  email       String?
+  phoneNumber String?
+  fullAddress String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  User        User     @relation(fields: [userId], references: [id])
+}
+
+model VideosOrder {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  productId   Int
+  fullName    String?
+  email       String?
+  phoneNumber String?
+  fullAddress String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  User        User     @relation(fields: [userId], references: [id])
+}
+
+model VideoCall {
+  id                   Int       @id @default(autoincrement())
+  initiatorUserId      Int
+  meetingLink          String
+  isGroupCall          Boolean   @default(false)
+  isActive             Boolean   @default(true)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  lastMeetingTimestamp DateTime?
+  status               Boolean   @default(false)
+  InitiatorUser        User      @relation(fields: [initiatorUserId], references: [id])
+}
+
+model VoiceCall {
+  id                   Int       @id @default(autoincrement())
+  initiatorUserId      Int
+  isGroupCall          Boolean   @default(false)
+  isActive             Boolean   @default(true)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  lastMeetingTimestamp DateTime?
+  status               Boolean   @default(false)
+  InitiatorUser        User      @relation(fields: [initiatorUserId], references: [id])
+}
+
+model Chat {
+  id                   Int              @id @default(autoincrement())
+  senderId             Int
+  isGroupChat          Boolean          @default(false)
+  message              String
+  isRead               Boolean          @default(false)
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  lastMeetingTimestamp DateTime?
+  status               Boolean          @default(false)
+  SenderUser           User             @relation(fields: [senderId], references: [id])
+  Attachments          ChatAttachment[]
+}
+
+model ChatAttachment {
+  id        Int       @id @default(autoincrement())
+  chatId    Int
+  mediaType MediaType
+  mediaUrl  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Chat      Chat      @relation(fields: [chatId], references: [id])
+}
+
+model Admin {
+  id          Int               @id @default(autoincrement())
+  userId      Int               @unique
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  isAdmin     Boolean           @default(false)
+  User        User              @relation(fields: [userId], references: [id])
+  AdminAction AdminAction[]
+  Employees   AdminToEmployee[]
+}
+
+model AdminRegistration {
+  id        Int      @id @default(autoincrement())
+  fullName  String
+  email     String   @unique
+  country   String
+  state     String
+  area      String
+  address   String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Employee {
+  id             Int               @id @default(autoincrement())
+  userId         Int               @unique
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  access         Json
+  isEmployee     Boolean           @default(false)
+  AdminToEmloyee AdminToEmployee[]
+  User           User              @relation(fields: [userId], references: [id])
+  EmployeeAction EmployeeAction[]
+}
+
+model EmployeeRegistration {
+  id        Int      @id @default(autoincrement())
+  fullName  String
+  email     String   @unique
+  country   String
+  state     String
+  area      String
+  address   String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AdminToEmployee {
+  id         Int      @id @default(autoincrement())
+  adminId    Int
+  employeeId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  Admin      Admin    @relation(fields: [adminId], references: [id])
+  Employee   Employee @relation(fields: [employeeId], references: [id])
+}
+
+model AdminAction {
+  id        Int      @id @default(autoincrement())
+  adminId   Int
+  action    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  admin     Admin    @relation(fields: [adminId], references: [id])
+}
+
+model EmployeeAction {
+  id         Int      @id @default(autoincrement())
+  employeeId Int
+  action     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  employee   Employee @relation(fields: [employeeId], references: [id])
+}
+
+enum MediaType {
+  VIDEO
+  PHOTO
+  BANNER
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  BLOCKED
+}
+
+enum FeedbackReason {
+  BUG
+  FEATURE_REQUEST
+  GENERAL
+  OTHER
+}
+
+enum UserRole {
+  ADMIN
+  EMPLOYE
+  USER
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+enum PaymentMethod {
+  UNPAID
+  CREDIT_CARD
+  PAYPAL
+  BITCOIN
+}
+
+enum ShippingMethod {
+  STANDARD
+  EXPRESS
+  OVERNIGHT
+}

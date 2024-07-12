@@ -1,0 +1,8 @@
+ {
+    "watch": ["api"],
+    "ext": "js,mjs",
+    "exec": "node --experimental-modules --es-module-specifier-resolution=node -r esm"
+  }
+ 
+
+

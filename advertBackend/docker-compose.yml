@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3500:3500"
+    environment:
+        - .env 
+    command: ["node", "api/server.mjs"]
+
+    develop:
+      watch:
+        - path: ./package.json
+          action: rebuild
+        - path: ./next.config.js
+          action: rebuild
+        - path: ./package-lock.json
+          action: rebuild
+        - path: .
+          target: /api
+          action: sync
+
+volumes:
+  db-data:
